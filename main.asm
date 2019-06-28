@@ -1,14 +1,14 @@
-; for ATTiny13A
+; for ATTiny13A（ヒューズビットは、買ってきたまま）
 ; Timer0 を使って、１時間に１分間だけLEDをONにしてみたい。ただそれだけ。
 ; 2019-06-28 by penkich
 ;
-.equ LED_PIN = PB0			; use PB0 as LED pin
+.equ LED_PIN = PB0	; use PB0 as LED pin
 .def tmp = r16
 .def loop1 = r17
 .def loop2 = r18
 .def flag = r19
-.equ time_len = 250
-.equ ratio = 59
+.equ time_len = 250	; 適当に調節したら６０分になるか？
+.equ ratio = 59		; ONに対するOFFの時間の比率
 
 .org	0x0000
 	rjmp main
