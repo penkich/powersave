@@ -13,50 +13,46 @@
 .org	0x0000
 	rjmp main
 
-.org    OVF0addr			; Timer0 Overflowの割り込みアドレス
-	rjmp OVF_isr			; jump to label OVF_isr
+.org    OVF0addr	; Timer0 Overflowの割り込みアドレス
+	rjmp OVF_isr	; jump to label OVF_isr
 
 main:
     cli ; 割り込み禁止
-	sbi	DDRB, LED_PIN		; set LED pin as output
-	;ldi	tmp, (1<<CS02)|(1<<CS00); set configuration bits to temprary register
-	ldi tmp, 0x05       ; プリスケーラ 5: 1024分の1
-	out	TCCR0B, tmp		; 
-	ldi tmp, 0x00       ; カウンター
-	out TCNT0, tmp
-	ldi	tmp, (1<<TOIE0)	; オーバーフロー割り込み許可
-	out	TIMSK0, tmp		; ここは、outでないとダメ!
+    sbi DDRB, LED_PIN	; set LED pin as output
+    ldi tmp, 0x05       ; プリスケーラ 5: 1024分の1
+    out TCCR0B, tmp		; 
+    ldi tmp, 0x00       ; カウンター
+    out TCNT0, tmp
+    ldi	tmp, (1<<TOIE0)	; オーバーフロー割り込み許可
+    out	TIMSK0, tmp	; ここは、outでないとダメ!
     ldi loop1, ratio
-	ldi loop2, time_len
-	ldi flag, 1
-	sei ; 割り込み許可
+    ldi loop2, time_len
+    ldi flag, 1
+    sei ; 割り込み許可
 loop:
     nop
-	nop
-	nop
-	rjmp	loop
+    nop
+    nop
+    rjmp loop
 
-OVF_isr:
-
-dec loop2
-brne next2
+OVF_isr:		; Timer0 オーバーフロー割り込みルーチン
+    dec loop2
+    brne next2
 
     dec loop1
-	brne next
+    brne next
 
-	ldi tmp, 0b00000001
-	out PORTB, tmp
-	ldi    loop1, ratio
-	ldi loop2, time_len
-	reti
-
-next:
-    ldi tmp, 0b00000000
-	out PORTB, tmp
-	ldi loop2, time_len
-	reti
-
-
-next2:
+    ldi tmp, 0b00000001
+    out PORTB, tmp
+    ldi    loop1, ratio
+    ldi loop2, time_len
     reti
 
+next:			; ポートをOFF
+    ldi tmp, 0b00000000
+    out PORTB, tmp
+    ldi loop2, time_len
+    reti
+    
+next2:
+    reti
