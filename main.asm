@@ -7,7 +7,7 @@
 .def loop1 = r17
 .def loop2 = r18
 .def flag = r19
-.equ time_len = 250	; 適当に調節したら６０分になるか？
+.equ time_len = 255	; 適当に調節したら６０分になるか？
 .equ ratio = 59		; ONに対するOFFの時間の比率
 
 .org	0x0000
