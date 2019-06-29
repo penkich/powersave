@@ -1,5 +1,5 @@
 ; for ATTiny13A（ヒューズビットは、買ってきたまま）
-; Timer0 を使って、１時間に１分間だけLEDをONにしてみたい。ただそれだけ。
+; Timer0 を使って、約１時間に約１分間だけLEDをONにしてみたい。ただそれだけ。
 ; 2019-06-28 by penkich
 ;
 .equ LED_PIN = PB0	; use PB0 as LED pin
